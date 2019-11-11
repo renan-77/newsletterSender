@@ -7,9 +7,12 @@
     <header>
         <style>
         body{
-            margin-left: 3%;
+            margin-top: 30vh;
+            text-align: center;
+            /**margin: 0 auto;*/
             background-color: #2d2d2d;
             color: white;
+            font-family: arial;
         }
         </style>
     </header>
@@ -18,9 +21,9 @@
             <?php
             //Generating a Greeting based on the name of the user.
                 if($nameInput == ""){
-                    echo 'Hi, user.';
+                    echo 'Hi, <font color=red>user</font>.';
                 }else{
-                    echo "Hi, $nameInput.";
+                    echo "Hi, <font color=red>$nameInput</font>.";
                 }
             ?>
         </h1>
@@ -29,7 +32,7 @@
         <p class="pname">
             <?php
             //Checking if name was altered with something, If not returns a red warning.
-                if($nameInput == "name" || $nameInput == ""){
+                if($nameInput == "name"){
                     echo '<style>
                             .pname{
                                 color: red;
@@ -44,10 +47,9 @@
         </p>
         <input type="text" name="userName" value="name">
         <br>
-        <br>
         <p class="pemail"><?php
             ////Checking if email was altered with something, If not returns a red warning.
-            if($emailAddress == "email" || $emailAddress == ""){
+            if($emailAddress == "email"){
                 echo '<style>
                         .pemail{
                             color: red;
@@ -62,36 +64,58 @@
         <input type="text" name="email" value="email">
         <br>
         <br>
-        <input type="submit" value="Submit"> 
+        <input type="submit" name="submit" value="Submit" style="border: none;
+            color: red;
+            padding: 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 4px 2px;
+            border-radius: 8px;"> 
         </form>
         <h2>
             <?php
                 //Checking if the fields are altered to start connection.
-                if($emailAddress != "email" && $nameInput != "name"){
-                    //Data for connection.
-                    $servername = "localhost";
-                    $username = "renan";
-                    $password = "000";
-                    $dbname = "renan";
-                    
-                    // Connection statement.
-                    $conn = new mysqli($servername, $username, $password, $dbname);
-                    
-                    // Check connection
-                    if ($conn->connect_error) {
-                        die("Connection failed: " . $conn->connect_error);
-                    }
+                if (isset($_GET['submit'])) {
+                    if($emailAddress != "email" && $nameInput != "name"){
+                        //Data for connection.
+                        $servername = "localhost";
+                        $username = "renan";
+                        $password = "000";
+                        $dbname = "renan";
+                        
+                        // Connection statement.
+                        $conn = new mysqli($servername, $username, $password, $dbname);
+                        
+                        // Check connection
+                        if ($conn->connect_error) {
+                            die("Connection failed: " . $conn->connect_error);
+                        }
 
-                    //Inserting onto database statement.
-                    $stmt = "INSERT INTO Newsletter (userFullName, userEmail)
-                                VALUES('$nameInput', '$emailAddress');";
+                        //Inserting onto database statement.
+                        $stmt = "INSERT INTO Newsletter (userFullName, userEmail)
+                                    VALUES('$nameInput', '$emailAddress');";
 
-                    //Inserting on database in case that the fields were properly altered.
-                    if($emailAddress != "email" && $nameInput != "name" && $emailAddress != "" && $nameInput != ""){
-                        if ($conn->query($stmt) === TRUE) {
-                            echo "You've Succefully registred for our newsletter!";
-                        } else {
-                            echo "Error: " . $stmt . "<br>" . $conn->error;
+                        //Inserting on database in case that the fields were properly altered.
+                        if($emailAddress != "email" && $nameInput != "name" && $emailAddress != "" && $nameInput != ""){
+                            if ($conn->query($stmt) === TRUE) {
+                                echo '<style>
+                                    h2{
+                                        color: green;
+                                    }
+                                </style>';
+                                echo "You've Succefully registred for our newsletter!";
+                            } else {
+                                echo "Error: " . $stmt . "<br>" . $conn->error;
+                            }
+                        }else{
+                            echo '<style>
+                                    h2{
+                                        color: red;
+                                    }
+                                </style>';
+                            echo "Fields are blank, please insert the requested data";
                         }
                     }
                 }
