@@ -51,13 +51,28 @@
     </header>
     <body>
     <?php
+    /**
+     * The installation of PEAR has to be done in here and referenced in php.ini file:
+     * $ wget http://pear.php.net/go-pear.phar
+     * $ php go-pear.phar
+     * 
+     * After that, Mail has to be installed with PEAR:
+     * pear install Mail-1.4.1
+     * 
+     * At last, net_SMTP needs also to be installed with PEAR:
+     * pear install Net_SMTP.
+     * 
+     * Mailjet is being used to deliver the emails.
+     * https://www.mailjet.com/
+     * 
+     */
         // Pear Mail Library
         require_once "Mail.php";
 
-        $from = '<fenixteamcorporation@gmail.com>';
+        $from = 'Fenix Team Corp <fenixteamcorporation@gmail.com>';
         $to = '<renanmonteiroft@gmail.com>';
         $subject = 'Hi!';
-        $body = "Hi,\n\nHow are you?";
+        $body = "Hi,$loginusr How are you?";
 
         $headers = array(
             'From' => $from,
@@ -66,11 +81,11 @@
         );
 
         $smtp = Mail::factory('smtp', array(
-                'host' => 'smtp-relay.gmail.com',
+                'host' => 'in-v3.mailjet.com',
                 'port' => '25',
                 'auth' => true,
-                'username' => 'fenixteamcorporation@gmail.com',
-                'password' => 'Monteiro00'
+                'username' => 'b7e32e4a86776c60a4fff3215b055a44',
+                'password' => 'e6f8618e45c6d856dc098b5fd4187182'
             ));
 
         $mail = $smtp->send($to, $headers, $body);
