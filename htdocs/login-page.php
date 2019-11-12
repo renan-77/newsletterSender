@@ -1,7 +1,4 @@
 <?php
-        $loginusr = $_GET['username'];
-        $loginpass = $_GET['password'];
-        //Data for connection.
         $servername = "localhost";
         $username = "renan";
         $password = "000";
@@ -15,26 +12,6 @@
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }echo 'Connection Success!<br>';
-
-        //Statement for login in where login and password are surrounded with "".
-        $stmt = 'SELECT * FROM users WHERE userName ='."\"$loginusr\"".' AND userPassword='."\"$loginpass\"".';';
-
-        //Creating response for the query based on $stmt. 
-        $res = $conn->query($stmt);
-
-        //Calling function mysqli_num_rows with response as argument.
-        $rows = mysqli_num_rows($res);
-
-        //Evaluating if $rows function is positive if it is returns successful login.
-        if($rows === 1){
-            $isLoginSuccessful = true;
-            echo 'SUCESSFULL LOGIN';
-        
-            //Returns fail login in case it is not.
-        }else{
-            $isLoginSuccessful = false;
-            echo "Wrong Credentials";
-}     
 ?>
 <html>
     <header>
@@ -66,35 +43,38 @@
      * https://www.mailjet.com/
      * 
      */
-        // Pear Mail Library
-        require_once "Mail.php";
+        function sendEmail($user){
+            // Pear Mail Library
+            require_once "Mail.php";
 
-        $from = 'Fenix Team Corp <fenixteamcorporation@gmail.com>';
-        $to = '<renanmonteiroft@gmail.com>';
-        $subject = 'Hi!';
-        $body = "Hi,$loginusr How are you?";
+            $from = 'Fenix Team Corp <fenixteamcorporation@hotmail.com>';
+            $to = '<renanmonteiroft@gmail.com>';
+            $subject = 'Hi!';
+            $body = "Hi, $user How are you?";
 
-        $headers = array(
-            'From' => $from,
-            'To' => $to,
-            'Subject' => $subject
-        );
+            $headers = array(
+                'From' => $from,
+                'To' => $to,
+                'Subject' => $subject
+            );
 
-        $smtp = Mail::factory('smtp', array(
-                'host' => 'in-v3.mailjet.com',
-                'port' => '25',
-                'auth' => true,
-                'username' => 'b7e32e4a86776c60a4fff3215b055a44',
-                'password' => 'e6f8618e45c6d856dc098b5fd4187182'
-            ));
+            $smtp = Mail::factory('smtp', array(
+                    'host' => 'in-v3.mailjet.com',
+                    'port' => '587',
+                    'auth' => true,
+                    'username' => 'b7e32e4a86776c60a4fff3215b055a44',
+                    'password' => 'e6f8618e45c6d856dc098b5fd4187182'
+                ));
 
-        $mail = $smtp->send($to, $headers, $body);
+            $mail = $smtp->send($to, $headers, $body);
 
-        if (PEAR::isError($mail)) {
-            echo('<p>' . $mail->getMessage() . '</p>');
-        } else {
-            echo('<p>Message successfully sent!</p>');
+            if (PEAR::isError($mail)) {
+                echo('<p>' . $mail->getMessage() . '</p>');
+            } else {
+                echo('<p>Message successfully sent!</p>');
+            }
         }
+        $conn->close();
     ?>
     </body>
 </html>
