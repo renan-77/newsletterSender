@@ -1,7 +1,7 @@
 <?php 
     //Generating variables from the user input.
     $nameInput = $_GET['userName'];
-    $emailAddress = $_GET['email'];
+    $emailAddress =$_GET['email'];
 ?>
 <html>
     <header>
@@ -45,7 +45,7 @@
                 }
             ?>
         </p>
-        <input type="text" name="userName" value="name">
+        <input type="text" name="userName" value="name" onclick="value=''">
         <br>
         <p class="pemail"><?php
             ////Checking if email was altered with something, If not returns a red warning.
@@ -61,10 +61,11 @@
                 echo $emailAddress;
             }
         ?></p>
-        <input type="text" name="email" value="email">
+        <input type="text" name="email" value="email" onclick="value=''">
         <br>
         <br>
         <input type="submit" name="submit" value="Submit" style="border: none;
+            background-color: #f1f1f1;
             color: red;
             padding: 15px;
             text-align: center;
@@ -74,6 +75,16 @@
             margin: 4px 2px;
             border-radius: 8px;"> 
         </form>
+        <input type="button" name="Staff" value="Staff Login" style="border: none;
+            background-color: #f1f1f1;
+            color: red;
+            padding: 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 4px 2px;
+            border-radius: 8px;" onclick="document.location.href='mail-server.php'"> 
         <h2>
             <?php
                 //Checking if the fields are altered to start connection.
@@ -117,10 +128,11 @@
                                 </style>';
                             echo "Fields are blank, please insert the requested data";
                         }
+                        //Closing Connection.
+                        $conn->close(); 
                     }
                 }
-                //Closing Connection.
-                $conn->close();
+                
             ?>
         </h2>
     </body>
