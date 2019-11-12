@@ -51,42 +51,35 @@
     </header>
     <body>
     <?php
+        // Pear Mail Library
+        require_once "Mail.php";
 
-        echo "This part is being built!";
-        /* if($isLoginSuccessful == true){  
-            include_once("Mail/Mail.php");
-            include_once( "Mail/Mail/sendmail.php");
+        $from = '<fenixteamcorporation@gmail.com>';
+        $to = '<renanmonteiroft@gmail.com>';
+        $subject = 'Hi!';
+        $body = "Hi,\n\nHow are you?";
 
-            $from = 'fenixteamcorporation@gmail.com';
-            $to = 'renanmonteiroft@gmail.com';
-            $subject = 'Hi!';
-            $body = "Hi,\n\nHow are you?";
+        $headers = array(
+            'From' => $from,
+            'To' => $to,
+            'Subject' => $subject
+        );
 
-            $headers = array(
-                'From' => $from,
-                'To' => $to,
-                'Subject' => $subject
-            );
+        $smtp = Mail::factory('smtp', array(
+                'host' => 'smtp-relay.gmail.com',
+                'port' => '25',
+                'auth' => true,
+                'username' => 'fenixteamcorporation@gmail.com',
+                'password' => 'Monteiro00'
+            ));
 
-            $smtp = Mail::factory('smtp', array(
-                    'host' => 'aspmx.l.google.com',
-                    'port' => '25',
-                    'auth' => true,
-                    'username' => 'fenixteamcorporation@gmail.com',
-                    'password' => 'Monteiro00'
-                ));
+        $mail = $smtp->send($to, $headers, $body);
 
-            $mail = $smtp->send($to, $headers, $body);
-
-            if (PEAR::isError($mail)) {
-                echo('<p>' . $mail->getMessage() . '</p>');
-            } else {
-                echo('<p>Message successfully sent!</p>');
-            }
-
-        }else{
-            echo 'alalal';
-        } */
+        if (PEAR::isError($mail)) {
+            echo('<p>' . $mail->getMessage() . '</p>');
+        } else {
+            echo('<p>Message successfully sent!</p>');
+        }
     ?>
     </body>
 </html>
