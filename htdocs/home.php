@@ -45,7 +45,7 @@
                 }
             ?>
         </p>
-        <input type="text" name="userName" value="name" onclick="value=''">
+        <input type="text" name="userName" value="name" onfocus="value=''">
         <br>
         <p class="pemail"><?php
             ////Checking if email was altered with something, If not returns a red warning.
@@ -61,7 +61,7 @@
                 echo $emailAddress;
             }
         ?></p>
-        <input type="text" name="email" value="email" onclick="value=''">
+        <input type="text" name="email" value="email" onfocus="value=''">
         <br>
         <br>
         <input type="submit" name="submit" value="Submit" style="border: none;

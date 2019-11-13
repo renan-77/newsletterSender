@@ -16,8 +16,8 @@
     <h1>Welcome to <font color= red>Mail Server</font></h1>
     <h2 style="color: grey">Please Login:</h2>
     <form name="form" action="">
-        <input type="text" name="username" value="username" onclick="value=''"><br>
-        <input type="password" name="password" value="password" onclick="value=''"><br>
+        <input type="text" name="username" value="username" onfocus="value=''"><br>
+        <input type="password" name="password" value="password" onfocus="value=''"><br>
         <input type="submit" name="submit" value="Submit" style="border: none;
             background-color: #f1f1f1;
             color: red;
@@ -45,13 +45,13 @@
         // Check connection
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
-        }echo 'Connection Success!<br>';
+        }
 
         //Statement for login in where login and password are surrounded with "".
-        $stmt = 'SELECT * FROM users WHERE userName ='."\"$loginusr\"".' AND userPassword='."\"$loginpass\"".';';
+        $checkLogin = 'SELECT * FROM users WHERE userName ='."\"$loginusr\"".' AND userPassword='."\"$loginpass\"".';';
 
-        //Creating response for the query based on $stmt. 
-        $res = $conn->query($stmt);
+        //Creating response for the query based on $checkLogin. 
+        $res = $conn->query($checkLogin);
 
         //Calling function mysqli_num_rows with response as argument.
         $rows = mysqli_num_rows($res);
@@ -64,12 +64,39 @@
             //Returns fail login in case it is not.
         }else{
             $isLoginSuccessful = false;
-            echo "Wrong Credentials";
+            if (isset($_GET['submit'])) {
+                echo "<font color= red>Wrong Credentials</font>";
+            }
         }
 
+        //In case that the login is successfull.
         if($isLoginSuccessful == true){
+            //Generating unique token based on $loginusr.
+            $token = sha1(uniqid($loginusr, true));
+
+            //Creating statement to insert token.
+            $insertToken = "INSERT INTO loginToken(token, user) VALUES('$token', '$loginusr')";
+            
+            //Re-declaring $conn variable due to mysqli:::query error.
+            $conn = new mysqli($servername, $username, $password, $dbname);
+
+            //Checking input of data.
+            if ($conn->query($insertToken) === TRUE) {
+                echo "token $token generated.";
+            }else{
+                echo "database insert error";
+            }
+
+            //Including login-page;
             include 'login-page.php';
-            sendEmail($loginusr);
+
+            //Calling emailing page
+            /* header('Location: login-page.php'); */  
+
+            //Calling function to get the data from mail-server to login-page.php
+            checkData($loginusr,$token);
+
+            
         }
     ?>
 </body>
