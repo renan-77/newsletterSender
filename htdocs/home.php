@@ -31,34 +31,44 @@
         <form name="form" action="" method="get">
         <p class="pname">
             <?php
-            //Checking if name was altered with something, If not returns a red warning.
-                if($nameInput == "name"){
-                    echo '<style>
-                            .pname{
-                                color: red;
-                            }
-                        </style>';
-                    echo 'Please Insert Your Name!';
-                //Giving output of name in case that it was altered.
-                }else if($emailAddress != "email" && $nameInput != "name"){
-                    echo $nameInput;
+                //Checks if form is submitted.
+                if (isset($_GET['submit'])) {
+                    $isUserDataValid = false;
+                //Checking if name was altered with something, If not returns a red warning.
+                    if($nameInput == "name" || $nameInput == ""){
+                        echo '<style>
+                                .pname{
+                                    color: red;
+                                }
+                            </style>';
+                        echo 'Please insert your name!';
+                    //Giving output of name in case that it was altered.
+                    }else if($emailAddress != "email" && $nameInput != "name" && strpos($emailAddress,'@')){
+                        echo $nameInput;
+                        $isUserDataValid = true;
+                    }
                 }
             ?>
         </p>
         <input type="text" name="userName" value="name" onfocus="value=''">
         <br>
         <p class="pemail"><?php
-            ////Checking if email was altered with something, If not returns a red warning.
-            if($emailAddress == "email"){
-                echo '<style>
-                        .pemail{
-                            color: red;
-                        }
-                      </style>';
-                echo 'Please Insert Your Email!';
-            //Giving output of email in case that it was altered.
-            }else if($emailAddress != "email" && $nameInput != "name"){
-                echo $emailAddress;
+            //Checks if form is submitted.
+            if (isset($_GET['submit'])) {
+                ////Checking if email was altered with something, If not returns a red warning.
+                if($emailAddress == "email" || $emailAddress == "" || strpos($emailAddress,'@') === false || strpos($emailAddress,'.') === false){
+                    echo '<style>
+                            .pemail{
+                                color: red;
+                            }
+                        </style>';
+                    $isUserDataValid = false;
+                    echo 'Invalid email format!';
+                //Giving output of email in case that it was altered.
+                }else{
+                    $isUserDataValid = true;
+                    echo $emailAddress;
+                }
             }
         ?></p>
         <input type="text" name="email" value="email" onfocus="value=''">
@@ -87,9 +97,10 @@
             border-radius: 8px;" onclick="document.location.href='mail-server.php'"> 
         <h2>
             <?php
-                //Checking if the fields are altered to start connection.
+                //Checks if the form is submitted.
                 if (isset($_GET['submit'])) {
-                    if($emailAddress != "email" && $nameInput != "name"){
+                    //Checking if the fields are altered to start connection.
+                    if($isUserDataValid){
                         //Data for connection.
                         $servername = "localhost";
                         $username = "renan";
@@ -109,7 +120,6 @@
                                     VALUES('$nameInput', '$emailAddress');";
 
                         //Inserting on database in case that the fields were properly altered.
-                        if($emailAddress != "email" && $nameInput != "name" && $emailAddress != "" && $nameInput != ""){
                             if ($conn->query($stmt) === TRUE) {
                                 echo '<style>
                                     h2{
@@ -120,16 +130,16 @@
                             } else {
                                 echo "Error: " . $stmt . "<br>" . $conn->error;
                             }
-                        }else{
-                            echo '<style>
-                                    h2{
-                                        color: red;
-                                    }
-                                </style>';
-                            echo "Fields are blank, please insert the requested data";
-                        }
                         //Closing Connection.
                         $conn->close(); 
+                    }//Returns fields are blank in red in case both fields are empty.
+                    else{
+                        echo '<style>
+                                h2{
+                                    color: red;
+                                }
+                            </style>';
+                        echo "Fields are blank, please insert the requested data";
                     }
                 }
                 

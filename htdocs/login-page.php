@@ -8,8 +8,11 @@
        die();
    }
 
+   /**
+    * PLEASE REACTIVATE COUNTER WHEN FINISHING EDITING PAGE!
+    */
    //Increasing session timesRefreshed variable.
-   $_SESSION['refresh']++;
+   /* $_SESSION['refresh']++; */
 
    //If refresh greater or equals five, end's session.
    if($_SESSION['refresh'] >= 5){
@@ -32,7 +35,16 @@
     </header>
     <body>
     <h1><font color= red>Mail</font> Sender</h1>
+    <form name="form" action="">
+    <input type="text" name="subject" value=""><br>
+    <textarea name="message"></textarea><br>
+    <input type="submit">
+    </form>
     <?php
+        if(isset($_GET['message'])){
+            $abc = $_GET['message'];
+            echo $abc;
+        }
         /**
          * Checks if the generated token is in the database
          * Params -> $loginuser = The user used to login.
