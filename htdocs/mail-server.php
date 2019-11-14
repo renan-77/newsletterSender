@@ -30,6 +30,7 @@
             border-radius: 8px;"> 
     </form>
     <?php
+        session_start();
         $loginusr = $_GET['username'];
         $loginpass = $_GET['password'];
         //Data for connection.
@@ -61,7 +62,7 @@
             $isLoginSuccessful = true;
             echo 'SUCESSFULL LOGIN';
         
-            //Returns fail login in case it is not.
+        //Returns fail login in case it is not.
         }else{
             $isLoginSuccessful = false;
             if (isset($_GET['submit'])) {
@@ -71,6 +72,7 @@
 
         //In case that the login is successfull.
         if($isLoginSuccessful == true){
+            
             //Generating unique token based on $loginusr.
             $token = sha1(uniqid($loginusr, true));
 
@@ -83,6 +85,8 @@
             //Checking input of data.
             if ($conn->query($insertToken) === TRUE) {
                 echo "token $token generated.";
+                $_SESSION['LOGON'] = true;
+                $_SESSION['refresh'] = 0;
             }else{
                 echo "database insert error";
             }
@@ -90,14 +94,12 @@
             //Including login-page;
             include 'login-page.php';
 
-            //Calling emailing page
-            /* header('Location: login-page.php'); */  
-
             //Calling function to get the data from mail-server to login-page.php
             checkData($loginusr,$token);
 
-            
-        }
+            //Redirects to login-page.php
+            header('Location: login-page.php');
+        }$conn->close();
     ?>
 </body>
 </html>

@@ -1,3 +1,3 @@
 <?php
-    echo $_SERVER["MYSQL_USER"]; 
+    echo $_SERVER["USER"]; 
 ?>
