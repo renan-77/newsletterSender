@@ -61,7 +61,7 @@
                 }
     
                 //Sql statement.
-                $sql = "SELECT userFullName, userEmail FROM Newsletter;";
+                $sql = "SELECT * FROM Newsletter;";
     
                 //Sql Query.
                 $result = mysqli_query($conn,$sql);
@@ -69,19 +69,31 @@
                 //Checking if the query returns any result.
                 if ($row = mysqli_num_rows($result) > 0) {
                     $name = [];
+                    $email = [];
                     $counter = 0;
-                    while($row_print = mysqli_fetch_array($result)){
-                        echo "Row: " . $row_print[$counter] . "<br>";
-                        echo "Counter: " . $counter . "<br>";
 
-                        for($i = 0; $i < sizeof($row_print); $i++){
-                            if($counter % 2 == 1){
-                                $name[$i] = $row_print[$counter];
-                                echo $name[$i];
-                            }
-                        }
+                    //Running while condition to create array $row_print.
+                     while($row_print = mysqli_fetch_array($result)){
+                       /* print_r("Name: " . $row_print['userFullName']);
+
+                        echo "<br>";
+
+                        print_r("Email: " . $row_print['userEmail']);
+
+                        echo "<br>";  */
+
+                        //Creating array $name with the registers of names in the $row_print array.
+                        $name[$counter] = $row_print['userFullName'];
+
+                        //Creating array $email with the registers of names in the $row_print array.
+                        $email[$counter] = $row_print['userEmail'];
+
+                        //Increasing counter for array population
                         $counter++;
                     }
+                    //Calling writeMessage function.
+                    writeMessage($name);
+
                 //Returns no results if there's none.
                 }else {
                     echo "No results";
@@ -91,14 +103,22 @@
          * The emails(both the subject and the message) will be written with that function,
          * $name is the argument and also, it has to be written in where the names of the user will be.
          */
-            function writeMessage($name){    
-                if(isset($_GET['submit'])){    
+            function writeMessage($registers){    
+                //Checks the form submission.
+                if(isset($_GET['submit'])){  
+                    //Variables based on the input fields.  
                     $subject = $_GET['subject'];
                     $message = $_GET['message'];
 
-                    echo str_replace('$name',$name,$subject) . "<br>" . str_replace('$name',$name,$message);
+                    /* Printing values of the array name in a loop based on input with $name as the field in where the names will be 
+                    customised for each subscriber. */
+                    for($i = 0; $i < sizeof($registers); $i++){
+                        echo str_replace('$name',$registers[$i],$subject) . "<br>" . str_replace('$name',$registers[$i],$message . "<br>");
+                    }
                 }
             }
+            //Calling getNames() to start the code when getting to this page.
+            getNames();
         ?>
     </p>
     <?php
@@ -160,17 +180,20 @@
                 // Pear Mail Library
                 require_once "Mail.php";
 
+                //Setting variables for mail sending.
                 $from = 'Fenix Team Corp <fenixteamcorporation@gmail.com>';
                 $to = '<renanmonteiroft@gmail.com>';
                 $subject = 'Hi!';
                 $body = "Hi, $user How are you?";
 
+                //Populating array with mail specifications.
                 $headers = array(
                     'From' => $from,
                     'To' => $to,
                     'Subject' => $subject
                 );
 
+                //Smtp connection fields.
                 $smtp = Mail::factory('smtp', array(
                         'host' => 'in-v3.mailjet.com',
                         'port' => '587',
@@ -179,8 +202,10 @@
                         'password' => 'e6f8618e45c6d856dc098b5fd4187182'
                     ));
 
+                //Send email function execution. 
                 $mail = $smtp->send($to, $headers, $body);
 
+                //Email sent with success checks.
                 if (PEAR::isError($mail)) {
                     echo('<p>' . $mail->getMessage() . '</p>');
                 } else {

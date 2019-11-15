@@ -10,7 +10,7 @@
         /**margin: 0 auto;*/
         background-color: #2d2d2d;
         color: white;
-        font-family: arial;
+        font-family: arial; 
     }
     </style>
      <h1><font color= red>Error</font> has occurred.</h1>

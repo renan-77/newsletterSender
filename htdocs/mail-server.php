@@ -99,6 +99,7 @@
 
             //Redirects to login-page.php
             header('Location: login-page.php');
+
         }$conn->close();
     ?>
 </body>
