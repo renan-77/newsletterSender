@@ -46,16 +46,59 @@
     </form>
     <p>
         <?php
-            function writeMessage(){    
+            function getNames(){
+                $servername = "localhost";
+                $username = "renan";
+                $password = "000";
+                $dbname = "renan";
+                
+                // Connection statement.
+                $conn = new mysqli($servername, $username, $password, $dbname);
+                
+                // Check connection
+                if ($conn->connect_error) {
+                    die("Connection failed: " . $conn->connect_error);
+                }
+    
+                //Sql statement.
+                $sql = "SELECT userFullName, userEmail FROM Newsletter;";
+    
+                //Sql Query.
+                $result = mysqli_query($conn,$sql);
+    
+                //Checking if the query returns any result.
+                if ($row = mysqli_num_rows($result) > 0) {
+                    $name = [];
+                    $counter = 0;
+                    while($row_print = mysqli_fetch_array($result)){
+                        echo "Row: " . $row_print[$counter] . "<br>";
+                        echo "Counter: " . $counter . "<br>";
+
+                        for($i = 0; $i < sizeof($row_print); $i++){
+                            if($counter % 2 == 1){
+                                $name[$i] = $row_print[$counter];
+                                echo $name[$i];
+                            }
+                        }
+                        $counter++;
+                    }
+                //Returns no results if there's none.
+                }else {
+                    echo "No results";
+                }
+            }
+        /**
+         * The emails(both the subject and the message) will be written with that function,
+         * $name is the argument and also, it has to be written in where the names of the user will be.
+         */
+            function writeMessage($name){    
                 if(isset($_GET['submit'])){    
                     $subject = $_GET['subject'];
                     $message = $_GET['message'];
-                    $name = "Renan";
 
                     echo str_replace('$name',$name,$subject) . "<br>" . str_replace('$name',$name,$message);
                 }
             }
-            writeMessage();
         ?>
     </p>
     <?php
@@ -77,23 +120,27 @@
             if ($conn->connect_error) {
                 die("Connection failed: " . $conn->connect_error);
             }
+
+            //Sql statement.
             $sql = "SELECT * FROM loginToken WHERE token=\"$token\";";
 
+            //Sql Query.
             $result = mysqli_query($conn,$sql);
 
+            //Checking if the query returns any result.
             if (mysqli_num_rows($result) > 0) {
                 $row = mysqli_fetch_assoc($result);
                 $dbuser = $row["user"];
 
+                //Checking if the user is the same as the one on the database.
                 if($dbuser == $loginuser){
                     header('Location: login-page.php');  
                 }
-
+            //Returns no results if there's none.
             } else {
-                echo "0 results";
-            }$conn->close();
+                echo "No results";
+            }
         }
-
         /**
         * The installation of PEAR has to be done in here and referenced in php.ini file:
         * $ wget http://pear.php.net/go-pear.phar
@@ -139,7 +186,7 @@
                 } else {
                     echo('<p>Message successfully sent!</p>');
                 }
-            }
+        }
     ?>
     </body>
 </html>
