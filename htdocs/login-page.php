@@ -7,24 +7,19 @@
        header('Location: error.php');
        die();
    }
-
-   /**
-    * PLEASE REACTIVATE COUNTER WHEN FINISHING EDITING PAGE!
-    */
    //Increasing session timesRefreshed variable.
-   /* $_SESSION['refresh']++; */
+   $_SESSION['refresh']++;
 
    //If refresh greater or equals five, end's session.
    if($_SESSION['refresh'] >= 5){
        session_destroy();
    }
-
 ?>
 <html>
     <header>
         <style>
         body{
-            margin-top: 30vh;
+            margin-top: 20vh;
             text-align: center;
             /**margin: 0 auto;*/
             background-color: #2d2d2d;
@@ -34,17 +29,36 @@
         </style>
     </header>
     <body>
-    <h1><font color= red>Mail</font> Sender</h1>
+    <h1 style="font-size: 10vh; padding: 0px; margin: 0px;"><font color= red>Mail</font> Sender</h1>
     <form name="form" action="">
-    <input type="text" name="subject" value=""><br>
-    <textarea name="message"></textarea><br>
-    <input type="submit">
+    <input type="text" name="subject" value="Type subject in here!" size="107" style="font-family: arial; font-size: 1em;" onfocus="value=''"><br>
+    <textarea name="message" rows="15" cols="105" onfocus="value=''" style="font-family: arial">Type the mail in here!</textarea><br>
+    <input type="submit" name="submit" value="Submit" style="border: none;
+            background-color: #f1f1f1;
+            color: red;
+            padding: 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 20px;
+            margin: 4px 2px;
+            border-radius: 8px;">
     </form>
+    <p>
+        <?php
+            function writeMessage(){    
+                if(isset($_GET['submit'])){    
+                    $subject = $_GET['subject'];
+                    $message = $_GET['message'];
+                    $name = "Renan";
+
+                    echo str_replace('$name',$name,$subject) . "<br>" . str_replace('$name',$name,$message);
+                }
+            }
+            writeMessage();
+        ?>
+    </p>
     <?php
-        if(isset($_GET['message'])){
-            $abc = $_GET['message'];
-            echo $abc;
-        }
         /**
          * Checks if the generated token is in the database
          * Params -> $loginuser = The user used to login.
@@ -99,7 +113,7 @@
                 // Pear Mail Library
                 require_once "Mail.php";
 
-                $from = 'Fenix Team Corp <fenixteamcorp@aol.com>';
+                $from = 'Fenix Team Corp <fenixteamcorporation@gmail.com>';
                 $to = '<renanmonteiroft@gmail.com>';
                 $subject = 'Hi!';
                 $body = "Hi, $user How are you?";
