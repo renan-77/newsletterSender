@@ -1,6 +1,6 @@
 <html>
     <header>
-        <title>Mail Server</title>
+        <title>Mail Server Login</title>
         <style>
         body{
             margin-top: 30vh;
@@ -70,6 +70,12 @@
             }
         }
 
+        /**
+         * In that part of the code a token is generated, at now (18/11/2019), it is only being 
+         * used to a simple check on the login and being generated in the database in which can
+         * be used to control in the future.
+         */
+
         //In case that the login is successfull.
         if($isLoginSuccessful == true){
             
@@ -91,14 +97,14 @@
                 echo "database insert error";
             }
 
-            //Including login-page;
-            include 'login-page.php';
+            //Including mail-sender-auth;
+            include 'mail-sender-auth.php';
 
-            //Calling function to get the data from mail-server to login-page.php
+            //Calling function to get the data from mail-server to mail-sender-auth.php
             checkData($loginusr,$token);
 
-            //Redirects to login-page.php
-            header('Location: login-page.php');
+            //Redirects to mail-sender-auth.php
+            header('Location: mail-sender-auth.php');
 
         }$conn->close();
     ?>

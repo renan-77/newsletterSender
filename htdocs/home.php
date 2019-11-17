@@ -5,6 +5,7 @@
 ?>
 <html>
     <header>
+        <title>Newsletter System</title>
         <style>
         body{
             margin-top: 30vh;
@@ -94,7 +95,7 @@
             display: inline-block;
             font-size: 14px;
             margin: 4px 2px;
-            border-radius: 8px;" onclick="document.location.href='mail-server.php'"> 
+            border-radius: 8px;" onclick="document.location.href='mail-sender-login.php'"> 
         <h2>
             <?php
                 //Checks if the form is submitted.

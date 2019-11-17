@@ -17,6 +17,7 @@
 ?>
 <html>
     <header>
+    <title>Mail Sender</title>
         <style>
         body{
             margin-top: 20vh;
@@ -92,7 +93,7 @@
                         $counter++;
                     }
                     //Calling writeMessage function.
-                    writeMessage($name);
+                    writeMessage($name,$email);
 
                 //Returns no results if there's none.
                 }else {
@@ -103,7 +104,10 @@
          * The emails(both the subject and the message) will be written with that function,
          * $name is the argument and also, it has to be written in where the names of the user will be.
          */
-            function writeMessage($registers){    
+            function writeMessage($registers,$mail_list){  
+                $subjects = [];
+                $messages = [];
+
                 //Checks the form submission.
                 if(isset($_GET['submit'])){  
                     //Variables based on the input fields.  
@@ -113,8 +117,17 @@
                     /* Printing values of the array name in a loop based on input with $name as the field in where the names will be 
                     customised for each subscriber. */
                     for($i = 0; $i < sizeof($registers); $i++){
-                        echo str_replace('$name',$registers[$i],$subject) . "<br>" . str_replace('$name',$registers[$i],$message . "<br>");
+                        /* echo str_replace('$name',$registers[$i],$subject) . "<br>" . str_replace('$name',$registers[$i],$message . "<br>"); */
+                        //Adding the registers to a subject list for each of the users.
+                        $subjects[$i] = str_replace('$name',$registers[$i],$subject);
+                         //Adding the registers to a message list for each of the users.
+                        $messages[$i] = str_replace('$name',$registers[$i],$message);
                     }
+                    print_r($subjects);
+                    echo "<br>";
+                    print_r($messages);
+                    echo "<br>";
+                    print_r($mail_list);
                 }
             }
             //Calling getNames() to start the code when getting to this page.
