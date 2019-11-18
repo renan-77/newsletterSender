@@ -7,32 +7,25 @@ registering customer part, which will register it in a database and a panel for 
 
 The database has to have the following:
 
-TABLE       |   COLUMNS
-loginToken  => tknID(int, primary key), token(varchar), user(varchar);
-Newsletter  => userID(int, primary key), userFullName(varchar), userEmail(varchar);
+TABLE       |   COLUMNS\
+loginToken  => tknID(int, primary key), token(varchar), user(varchar);\
+Newsletter  => userID(int, primary key), userFullName(varchar), userEmail(varchar);\
 users       => userID(int, primary key), userName(varchar), userPassword(varchar);
 
 ## Pear Mail Install
         The installation of PEAR has to be done in here and referenced in php.ini file:
-         
-        ```bash
+
         $ wget http://pear.php.net/go-pear.phar
-        ```
-        ```bash
+
         $ php go-pear.phar
-        ```
 
         After that, Mail has to be installed with PEAR:
 
-        ```bash
         pear install Mail-1.4.1
-        ```
 
         At last, net_SMTP needs also to be installed with PEAR:
         
-        ```bash
         pear install Net_SMTP.
-        ```
 
         Mailjet is being used to deliver the emails.
         https://www.mailjet.com/
