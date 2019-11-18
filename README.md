@@ -21,11 +21,11 @@ users       => userID(int, primary key), userName(varchar), userPassword(varchar
 
         After that, Mail has to be installed with PEAR:
 
-        pear install Mail-1.4.1
+        $ pear install Mail-1.4.1
 
         At last, net_SMTP needs also to be installed with PEAR:
         
-        pear install Net_SMTP.
+        $ pear install Net_SMTP.
 
         Mailjet is being used to deliver the emails.
         https://www.mailjet.com/
