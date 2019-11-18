@@ -75,7 +75,7 @@
         <input type="text" name="email" value="email" onfocus="value=''">
         <br>
         <br>
-        <input type="submit" name="submit" value="Submit" style="border: none;
+        <input type="submit" name="submit" value="Register" style="border: none;
             background-color: #f1f1f1;
             color: red;
             padding: 15px;
