@@ -46,3 +46,6 @@ users       => userID(int, primary key), userName(varchar), userPassword(varchar
     be allowed to type the subject of the email and in the second is the body of the message.
 
     TO ADD THE CUSTOM USER NAME IN THE EMAIL: Where is to be the name of the person, $name has to be written.  
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
