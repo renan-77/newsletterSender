@@ -123,11 +123,17 @@
                          //Adding the registers to a message list for each of the users.
                         $messages[$i] = str_replace('$name',$registers[$i],$message);
                     }
-                    print_r($subjects);
+
+                    //Printing recursively the arrays to compare their values to the actual data needed.
+
+                    /* print_r($subjects);
                     echo "<br>";
                     print_r($messages);
                     echo "<br>";
-                    print_r($mail_list);
+                    print_r($mail_list); */
+
+                    //Calling the send email function passing the arguments to it.
+                    sendEmail(0,$mail_list, $subjects, $messages);
                 }
             }
             //Calling getNames() to start the code when getting to this page.
@@ -187,42 +193,54 @@
         * 
         * Mailjet is being used to deliver the emails.
         * https://www.mailjet.com/
+        *
+        *For passing the arguments for the function the counter should be 0.
         * 
         */
-        function sendEmail($user, $token){
-                // Pear Mail Library
-                require_once "Mail.php";
+        function sendEmail($counter,$emails, $subjects, $messages){
+                while($counter < sizeof($emails)){
+                    // Pear Mail Library
+                    require_once "Mail.php";
 
-                //Setting variables for mail sending.
-                $from = 'Fenix Team Corp <fenixteamcorporation@gmail.com>';
-                $to = '<renanmonteiroft@gmail.com>';
-                $subject = 'Hi!';
-                $body = "Hi, $user How are you?";
+                    //Setting variables for mail sending.
+                    $from = 'User <user@email.com>';
+                    $to = $emails[$counter];
+                    $subject = $subjects[$counter];
+                    $body = $messages[$counter];
 
-                //Populating array with mail specifications.
-                $headers = array(
-                    'From' => $from,
-                    'To' => $to,
-                    'Subject' => $subject
-                );
+                    //Populating array with mail specifications.
+                    $headers = array(
+                        'From' => $from,
+                        'To' => $to,
+                        'Subject' => $subject
+                    );
 
-                //Smtp connection fields.
-                $smtp = Mail::factory('smtp', array(
-                        'host' => 'in-v3.mailjet.com',
-                        'port' => '587',
-                        'auth' => true,
-                        'username' => 'b7e32e4a86776c60a4fff3215b055a44',
-                        'password' => 'e6f8618e45c6d856dc098b5fd4187182'
-                    ));
+                    //Smtp connection fields.
+                    /* $smtp = Mail::factory('smtp', array(
+                            'host' => 'smtp.serverdomain.com',
+                            'port' => '587',
+                            'auth' => true,
+                            'username' => 'usernameInHere',
+                            'password' => 'passwordInHere'
+                        )); */
 
-                //Send email function execution. 
-                $mail = $smtp->send($to, $headers, $body);
+                    //Send email function execution. 
+                    /* $mail = $smtp->send($to, $headers, $body); */
 
-                //Email sent with success checks.
-                if (PEAR::isError($mail)) {
-                    echo('<p>' . $mail->getMessage() . '</p>');
-                } else {
-                    echo('<p>Message successfully sent!</p>');
+                    //Printing the data that is going to be send at every counter on loop.
+                    echo '<br><br>';
+                    echo 'Times through the loop: ' . $counter .' Mail to: ' .  $to . ' Subject: ' . $subject .  ' Message: ' . $body;
+                    echo '<br><br>';
+
+                    //Increasing the counter by one.
+                    $counter++;
+
+                    //Email sent with success checks.
+                    /* if (PEAR::isError($mail)) {
+                        echo('<p>' . $mail->getMessage() . '</p>');
+                    } else {
+                        echo('<p>Message successfully sent!</p>');
+                    } */
                 }
         }
     ?>

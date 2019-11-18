@@ -25,5 +25,5 @@
             display: inline-block;
             font-size: 14px;
             margin: 4px 2px;
-            border-radius: 8px;" onclick="document.location.href='mail-server-login.php'">
+            border-radius: 8px;" onclick="document.location.href='mail-sender-login.php'">
 </body>

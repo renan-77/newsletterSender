@@ -30,9 +30,11 @@
             border-radius: 8px;"> 
     </form>
     <?php
+        //Starting session to save variables.
         session_start();
         $loginusr = $_GET['username'];
         $loginpass = $_GET['password'];
+        
         //Data for connection.
         $servername = "localhost";
         $username = "renan";
